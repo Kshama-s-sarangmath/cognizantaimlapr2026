@@ -10,3 +10,4 @@ class Config:
         self.delivery_time_csv_path = os.getenv('delivery_time_csv_path')   
         self.sip_path = os.getenv('sip_path')
         self.uniform_path = os.getenv('uniform_path')
+        self.bernoulli_path = os.getenv('bernoulli_path')
