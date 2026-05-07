@@ -50,6 +50,21 @@ def interval_estimation():
     max_sales = sales_amount.max()        
     return mean_sales, min_sales, max_sales
 
+def confidence_interval_estimation():
+    config = Config()
+    data = pd.read_csv(config.estimation_path)
+    sales_amount = data['sales_amount']    
+    # Calculate mean and standard deviation
+    mean_sales = sales_amount.mean()
+    std_dev_sales = sales_amount.std()
+    n = len(sales_amount)
+    confidence_level = 0.95
+    z_score = stats.norm.ppf(1 - (1 - confidence_level) / 2)
+    margin_of_error = z_score * (std_dev_sales / (n ** 0.5))
+    lower_bound = mean_sales - margin_of_error
+    upper_bound = mean_sales + margin_of_error
+    return mean_sales, lower_bound, upper_bound
+
 if __name__ == "__main__":
     mean_sales, std_dev_sales, mean_purchase, std_dev_purchase = estimation()
     print(f"Sales Amount - Mean: {mean_sales}, Standard Deviation: {std_dev_sales}")
@@ -63,3 +78,7 @@ if __name__ == "__main__":
     mean_sales, min_sales, max_sales = interval_estimation()
 
     print(f"Sales Amount - Mean: {mean_sales}, Min: {min_sales}, Max: {max_sales}")
+
+    #confidence interval estimation
+    mean_sales, lower_bound, upper_bound = confidence_interval_estimation()
+    print(f"Sales Amount - Mean: {mean_sales}, Confidence Interval: [{lower_bound}, {upper_bound}]")
