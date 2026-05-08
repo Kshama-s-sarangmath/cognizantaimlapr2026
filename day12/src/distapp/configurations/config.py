@@ -17,3 +17,5 @@ class Config:
         self.estimation_path = os.getenv('estimation_path')
         self.effectiveness_path = os.getenv('effectiveness_path')
         self.hypothesis_path = os.getenv('hypothesis_path')
+        self.fraud_path = os.getenv('fraud_path')
+        self.mobile_drift_path = os.getenv('mobile_drift_path')
