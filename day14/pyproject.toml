@@ -12,6 +12,7 @@ dependencies = [
     "seaborn>=0.13",
     "sympy>=1.12",
     "python-dotenv>=0.21",
+    "opencv-python>=4.8"
 ]
 
 [project.optional-dependencies]
