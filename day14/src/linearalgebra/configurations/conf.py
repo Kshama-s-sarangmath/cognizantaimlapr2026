@@ -18,3 +18,4 @@ class Config:
     cyber_path = os.getenv('cyber_path')
     movie_path = os.getenv('movie_path')
     cleandata_path = os.getenv('cleandata_path')
+    cleandata_path_v1 = os.getenv('cleandata_path_v1')
