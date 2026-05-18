@@ -1,7 +1,6 @@
 #read messages from aiven kafka comedy-movies
 from pathlib import Path
-
-from kafka import KafkaConsumer, consumer
+from confluent_kafka import Consumer
 import json
 
 from kafkamessageapp.configurations.conf import KafkaConfig
@@ -21,7 +20,8 @@ def kafka_config():
 
 def kafka_consumer():
     conf = kafka_config()
-    consumer = KafkaConsumer(KafkaConfig.TOPIC_NAME, **conf)
+    consumer = Consumer(conf)
+    consumer.subscribe([KafkaConfig.TOPIC_NAME])
     return consumer
 
 def consume_messages(consumer):
