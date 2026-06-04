@@ -1,10 +1,13 @@
 #create linear regression model for house price prediction
+import os
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression   
 from sklearn.metrics import mean_squared_error, r2_score
 from supervisedmlapp.configurations.conf import HOUSE_FILE_PATH
 import matplotlib.pyplot as plt
+import pickle
 def linear_regression_model():
     # Load the dataset
     data = pd.read_csv(HOUSE_FILE_PATH)
@@ -36,6 +39,16 @@ def linear_regression_model():
     print(f'Coefficients: {model.coef_}')
     #print the intercept of the model
     print(f'Intercept: {model.intercept_}')
+
+    #pack the model using pickle
+    model_path = os.path.join(os.path.dirname(__file__), '..', 'models', 'linear_regression_model.pkl')
+    # Create the models/ folder if it doesn't already exist
+    os.makedirs(os.path.dirname(model_path), exist_ok=True)
+    
+    with open(model_path, 'wb') as f:
+        pickle.dump(model, f)
+
+    print(f'Model saved to {model_path}')
 
     #plot the regression line
     plt.scatter(X_test, y_test, color='blue', label='Actual')
