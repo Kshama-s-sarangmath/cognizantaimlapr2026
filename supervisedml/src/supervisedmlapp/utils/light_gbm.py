@@ -11,7 +11,8 @@ def train_light_gbm(data_path):
     data = pd.read_csv(data_path)
 
     # Encode string columns to integers so LightGBM can accept them
-    for col in data.select_dtypes(include='object').columns:
+    string_cols = data.select_dtypes(include=['object', 'string']).columns
+    for col in string_cols:
         data[col] = LabelEncoder().fit_transform(data[col].astype(str))
 
     # Assuming the target variable is named 'PlanDowngradeHistory' and the rest are features
@@ -25,21 +26,24 @@ def train_light_gbm(data_path):
     lgb_train = lgb.Dataset(X_train, label=y_train)
     lgb_eval = lgb.Dataset(X_test, label=y_test, reference=lgb_train)
 
-    # Set parameters for LightGBM
+    # num_leaves and min_data_in_leaf are kept small to match the dataset size (100 rows)
     params = {
         'objective': 'binary',
         'metric': 'binary_logloss',
         'boosting_type': 'gbdt',
-        'num_leaves': 31,
+        'num_leaves': 8,
+        'min_data_in_leaf': 5,
         'learning_rate': 0.05,
-        'feature_fraction': 0.9
+        'feature_fraction': 0.9,
+        'verbose': -1
     }
 
     # Train the model
     gbm = lgb.train(params,
                     lgb_train,
                     num_boost_round=100,
-                    valid_sets=lgb_eval
+                    valid_sets=lgb_eval,
+                    callbacks=[lgb.early_stopping(10, verbose=False)]
                    )
 
     # Predict on the test set
