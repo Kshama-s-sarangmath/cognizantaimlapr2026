@@ -14,7 +14,13 @@ def pca_analysis():
     #apply label encoding to the target variable
    
     label_encoder = LabelEncoder()
+
     y = label_encoder.fit_transform(data['QualityClass'])
+
+    #label encoding to defects, size and stitiching
+    data['Defects'] = label_encoder.fit_transform(data['Defects'])
+    data['Size'] = label_encoder.fit_transform(data['Size'])
+    data['Stitching'] = label_encoder.fit_transform(data['Stitching'])
 
     #apply one hot encoding to color,fabric,brand
     data = pd.get_dummies(data, columns=['Color', 'Fabric', 'Brand'])   
